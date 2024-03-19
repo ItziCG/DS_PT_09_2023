@@ -4,7 +4,6 @@ import joblib
 from PIL import Image
 
 
-# Cargar el modelo entrenado
 modelo = joblib.load('/Users/uxue/Desktop/DS_PT_09_2023/Machine_Learning/1-Supervisado/4-Ejercicio/best_model.pkl')
 
 def predecir_sobrevivencia(datos_pasajero):
@@ -12,7 +11,6 @@ def predecir_sobrevivencia(datos_pasajero):
     return prediccion
 
 
-# Función principal de la aplicación
 def main():
 
     st.markdown( "<h1 style='color:black;'>¿ Sobrevivirás al Titanic ?</h1>",unsafe_allow_html=True)
@@ -31,7 +29,7 @@ def main():
     acompaniantes = st.selectbox('Acompañantes', ['Si', 'No'])
 
     if st.button('Predecir'):
-        # Mapear los valores seleccionados a los requeridos por el modelo
+
         gender_map = {'Masculino': 0, 'Femenino': 1}
         acomp_map = {'No': 0, 'Si': 1}
         class_1= {'Primera': 1, 'Segunda':0, 'Tercera':0}
@@ -50,11 +48,11 @@ def main():
         embarked_q_enc = embarked_q[embarque]
         embarked_s_enc = embarked_s[embarque]
 
-        # Crear un DataFrame con los datos del pasajero
-        datos_pasajero = pd.DataFrame({'is_male': [genero_encoded], 'Age': [edad], 'Fare': [tarifa], 'Acompaniantes': [acomp_encoded],
-                                       'Pclass_1': [class_1_enc], 'Pclass_2': [class_2_enc], 'Pclass_3': [class_3_enc], 'Embarked_C': [embarked_c_enc], 'Embarked_Q': [embarked_q_enc], 'Embarked_S': [embarked_s_enc]})
+        datos_pasajero = pd.DataFrame({'is_male': [genero_encoded], 'Age': [edad], 'Fare': [tarifa],
+                                       'Acompaniantes': [acomp_encoded],'Pclass_1': [class_1_enc], 
+                                       'Pclass_2': [class_2_enc], 'Pclass_3': [class_3_enc],
+                                       'Embarked_C': [embarked_c_enc], 'Embarked_Q': [embarked_q_enc], 'Embarked_S': [embarked_s_enc]})
 
-        # Realizar la predicción de supervivencia
         prediccion = predecir_sobrevivencia(datos_pasajero)
         if prediccion[0] == 0:
             st.write('Lo siento... El pasajero no sobrevivió 😞')
